@@ -54,6 +54,20 @@ export default function LatestFeed({
     }
   };
 
+  if (articles.length === 0) {
+    return (
+      <div className="py-16 px-6 text-center bg-white border border-neutral-200/80 rounded-2xl max-w-xl mx-auto shadow-2xs">
+        <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#E50914] mb-3" />
+        <h3 className="text-base font-bold text-neutral-900 font-headline">
+          No stories published yet
+        </h3>
+        <p className="text-xs text-neutral-500 mt-1 max-w-sm mx-auto leading-relaxed">
+          Stories published via the editorial desk will appear here automatically.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10">
       {/* Editorial layout mixture: alternate between standard grid cards and horizontal features */}

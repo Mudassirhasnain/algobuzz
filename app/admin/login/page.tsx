@@ -114,7 +114,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-[#E50914] hover:bg-neutral-900 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed group"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-[#E50914] hover:bg-neutral-900 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed group cursor-pointer"
           >
             {loading ? (
               <>
@@ -129,12 +129,6 @@ export default function AdminLoginPage() {
             )}
           </button>
         </form>
-
-        <div className="text-center pt-2 border-t border-neutral-100">
-          <p className="text-[11px] text-neutral-400">
-            AlgoBuzz Publishing Engine &bull; Neon PostgreSQL Encrypted Sessions
-          </p>
-        </div>
       </div>
     </div>
   );

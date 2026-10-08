@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, X, ChevronRight, Film, Sparkles, Gamepad2, Newspaper } from 'lucide-react';
+import { Search, X, ChevronRight, Film, Sparkles, Gamepad2, Newspaper, Lock } from 'lucide-react';
 import Logo from './Logo';
 
 interface MobileMenuProps {
@@ -109,8 +109,16 @@ export default function MobileMenu({ isOpen, onClose, currentPath }: MobileMenuP
         </div>
 
         {/* Footer info */}
-        <div className="p-6 border-t border-neutral-100 bg-neutral-50">
-          <p className="text-xs text-neutral-500 leading-relaxed">
+        <div className="p-6 border-t border-neutral-100 bg-neutral-50 space-y-3">
+          <Link
+            href="/admin/login"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-neutral-900 hover:bg-[#E50914] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-2xs"
+          >
+            <Lock className="w-3.5 h-3.5 text-[#E50914]" />
+            <span>Editor Sign In</span>
+          </Link>
+          <p className="text-[11px] text-neutral-500 leading-relaxed text-center">
             <strong>AlgoBuzz</strong> — Independent digital entertainment journalism covering cinema, animation, interactive gaming, and media culture.
           </p>
         </div>

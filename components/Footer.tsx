@@ -69,7 +69,9 @@ export default function Footer() {
               <span className="hover:text-white transition-colors cursor-pointer">Editorial Ethics</span>
               <span className="hover:text-white transition-colors cursor-pointer">Masthead</span>
               <span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
-              <span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span>
+              <Link href="/admin/login" className="text-[#E50914] hover:text-white font-semibold transition-colors">
+                Editor Sign In
+              </Link>
             </div>
           </div>
         </div>

@@ -16,15 +16,15 @@ function ensureDataFile(): Article[] {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify(INITIAL_ARTICLES, null, 2), 'utf8');
-      return INITIAL_ARTICLES;
+      fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), 'utf8');
+      return [];
     }
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_ARTICLES;
+    return Array.isArray(parsed) ? parsed : [];
   } catch (err) {
     console.error('Error ensuring local data file:', err);
-    return INITIAL_ARTICLES;
+    return [];
   }
 }
 
@@ -59,14 +59,13 @@ export async function initDatabase(): Promise<void> {
 
   const sql = getNeonSql();
   if (!sql) {
-    // Ensure file storage is seeded
     ensureDataFile();
     isInitialized = true;
     return;
   }
 
   try {
-    // Create articles table in Neon
+    // Ensure articles table in Neon
     await sql`
       CREATE TABLE IF NOT EXISTS articles (
         id TEXT PRIMARY KEY,
@@ -91,27 +90,6 @@ export async function initDatabase(): Promise<void> {
         reading_time TEXT NOT NULL
       );
     `;
-
-    // Check count; if 0, seed initial entertainment journalism
-    const rows = await sql`SELECT COUNT(*)::int as count FROM articles;`;
-    const count = rows[0]?.count || 0;
-
-    if (count === 0) {
-      console.log('[Neon PostgreSQL] Seeding initial entertainment journalism articles...');
-      for (const a of INITIAL_ARTICLES) {
-        await sql`
-          INSERT INTO articles (
-            id, title, slug, subtitle, excerpt, content, category,
-            author_name, author_role, author_avatar, hero_image, hero_image_alt,
-            image_caption, tags, status, featured, published_at, created_at, updated_at, reading_time
-          ) VALUES (
-            ${a.id}, ${a.title}, ${a.slug}, ${a.subtitle}, ${a.excerpt}, ${a.content}, ${a.category},
-            ${a.author.name}, ${a.author.role}, ${a.author.avatar || null}, ${a.heroImage}, ${a.heroImageAlt},
-            ${a.imageCaption || null}, ${a.tags}, ${a.status}, ${a.featured}, ${a.publishedAt}, ${a.createdAt}, ${a.updatedAt}, ${a.readingTime}
-          ) ON CONFLICT (id) DO NOTHING;
-        `;
-      }
-    }
 
     isInitialized = true;
     console.log('[Neon PostgreSQL] Connected and initialized successfully.');

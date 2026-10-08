@@ -182,56 +182,69 @@ export default async function AdminDashboardPage() {
                 <th className="py-3 px-6 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {recentPosts.map((post) => (
-                <tr key={post.id} className="hover:bg-neutral-50/80 transition-colors">
-                  <td className="py-3.5 px-6 font-bold text-neutral-900 max-w-sm truncate">
-                    {post.title}
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span className="inline-block px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] bg-neutral-100 text-[#E50914] rounded">
-                      {post.category}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-neutral-600 font-medium">
-                    {post.author.name}
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span
-                      className={`inline-block px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] rounded ${
-                        post.status === 'published'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-neutral-500">
-                    {formatDate(post.publishedAt)}
-                  </td>
-                  <td className="py-3.5 px-6 text-right space-x-2">
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded transition-colors"
-                    >
-                      <Edit className="w-3 h-3" />
-                      <span>Edit</span>
-                    </Link>
-                    {post.status === 'published' && (
-                      <Link
-                        href={`/${post.category}/${post.slug}`}
-                        target="_blank"
-                        className="inline-flex items-center gap-1 px-2 py-1 text-neutral-400 hover:text-neutral-900"
-                        title="View Public Article"
+            {recentPosts.length > 0 ? (
+              <tbody className="divide-y divide-neutral-100">
+                {recentPosts.map((post) => (
+                  <tr key={post.id} className="hover:bg-neutral-50/80 transition-colors">
+                    <td className="py-3.5 px-6 font-bold text-neutral-900 max-w-sm truncate">
+                      {post.title}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="inline-block px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] bg-neutral-100 text-[#E50914] rounded">
+                        {post.category}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-neutral-600 font-medium">
+                      {post.author.name}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span
+                        className={`inline-block px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] rounded ${
+                          post.status === 'published'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
                       >
-                        <ExternalLink className="w-3 h-3" />
+                        {post.status}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-neutral-500">
+                      {formatDate(post.publishedAt)}
+                    </td>
+                    <td className="py-3.5 px-6 text-right space-x-2">
+                      <Link
+                        href={`/admin/posts/${post.id}/edit`}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded transition-colors"
+                      >
+                        <Edit className="w-3 h-3" />
+                        <span>Edit</span>
                       </Link>
-                    )}
+                      {post.status === 'published' && (
+                        <Link
+                          href={`/${post.category}/${post.slug}`}
+                          target="_blank"
+                          className="inline-flex items-center gap-1 px-2 py-1 text-neutral-400 hover:text-neutral-900"
+                          title="View Public Article"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <tbody>
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-neutral-400">
+                    <p className="text-sm font-semibold text-neutral-700">No stories in database</p>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Click &quot;Create Post&quot; above to write and publish your first article.
+                    </p>
                   </td>
                 </tr>
-              ))}
-            </tbody>
+              </tbody>
+            )}
           </table>
         </div>
       </div>

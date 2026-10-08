@@ -105,9 +105,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </section>
         </div>
       ) : (
-        <div className="text-center py-20 bg-white border border-neutral-200 rounded-2xl">
-          <p className="text-sm font-bold text-neutral-500 uppercase tracking-widest">
-            No articles currently published in this section.
+        <div className="text-center py-20 px-6 bg-white border border-neutral-200 rounded-3xl max-w-2xl mx-auto space-y-3 shadow-xs">
+          <span className="inline-block w-3 h-3 rounded-full bg-[#E50914] mb-1" />
+          <h3 className="text-xl font-bold font-headline text-neutral-900">
+            Awaiting Dispatches in {info.label}
+          </h3>
+          <p className="text-sm text-neutral-500 max-w-md mx-auto leading-relaxed">
+            Our {info.label} editorial desk is currently preparing incoming coverage. Published dispatches will appear here instantly.
           </p>
         </div>
       )}

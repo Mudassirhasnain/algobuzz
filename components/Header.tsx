@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Lock } from 'lucide-react';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
 
@@ -109,6 +109,16 @@ export default function Header() {
                   </button>
                 )}
               </div>
+
+              {/* Editorial Admin Sign In */}
+              <Link
+                href="/admin/login"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-neutral-800 hover:text-white bg-neutral-100 hover:bg-neutral-900 rounded-full transition-all border border-neutral-200 shadow-2xs"
+                title="Editor / Admin Login"
+              >
+                <Lock className="w-3 h-3 text-[#E50914]" />
+                <span className="hidden xs:inline">Sign In</span>
+              </Link>
 
               {/* Mobile search icon button */}
               <Link

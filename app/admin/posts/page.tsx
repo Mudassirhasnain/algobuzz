@@ -197,8 +197,25 @@ export default function ManagePostsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-16 text-center space-y-3">
-            <p className="text-sm font-bold text-neutral-700">No stories matching your filters</p>
-            <p className="text-xs text-neutral-400">Try altering your search or filters.</p>
+            <p className="text-sm font-bold text-neutral-800">
+              {articles.length === 0 ? 'No stories created yet' : 'No stories matching your filters'}
+            </p>
+            <p className="text-xs text-neutral-400">
+              {articles.length === 0
+                ? 'Click "Create Post" to write and publish your first article.'
+                : 'Try altering your search or filters.'}
+            </p>
+            {articles.length === 0 && (
+              <div className="pt-2">
+                <Link
+                  href="/admin/posts/new"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#E50914] text-white text-xs font-bold rounded-xl hover:bg-red-700 transition-colors"
+                >
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>Create Your First Post</span>
+                </Link>
+              </div>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -210,7 +227,7 @@ export default function ManagePostsPage() {
                   <th className="py-3 px-3">Section</th>
                   <th className="py-3 px-3">Author</th>
                   <th className="py-3 px-3">Status</th>
-                  <th className="py-3 px-3">Featured</th>
+                  <th className="py-3 px-3">Main Article</th>
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-6 text-right">Actions</th>
                 </tr>
@@ -279,19 +296,20 @@ export default function ManagePostsPage() {
                         </button>
                       </td>
 
-                      {/* Featured Toggle */}
-                      <td className="py-3 px-3">
+                      {/* Main Article Toggle */}
+                      <td className="py-3 px-3 whitespace-nowrap">
                         <button
                           onClick={() => handleToggleFeatured(article)}
                           disabled={isActionLoading}
-                          className={`p-1.5 rounded transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                             article.featured
-                              ? 'text-amber-500 hover:text-amber-600'
-                              : 'text-neutral-300 hover:text-neutral-500'
+                              ? 'bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200'
+                              : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200 border border-neutral-200'
                           }`}
-                          title="Toggle Featured on homepage"
+                          title="Click to select or unselect as Main Article on homepage"
                         >
-                          <Star className={`w-4 h-4 ${article.featured ? 'fill-amber-400' : ''}`} />
+                          <Star className={`w-3 h-3 ${article.featured ? 'fill-amber-500 text-amber-600' : 'text-neutral-400'}`} />
+                          <span>{article.featured ? 'Main Story' : 'Standard'}</span>
                         </button>
                       </td>
 

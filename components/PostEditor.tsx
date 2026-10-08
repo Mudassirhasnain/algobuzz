@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Clock,
   Sparkles,
+  Star,
 } from 'lucide-react';
 import { Article, Category, ArticleStatus } from '@/lib/types';
 import { slugify, calculateReadingTime } from '@/lib/utils';
@@ -535,23 +536,37 @@ export default function PostEditor({ initialArticle, isEditing = false }: PostEd
               </div>
             </div>
 
-            {/* Featured Lead Toggle */}
-            <label className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl border border-neutral-200 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={featured}
-                onChange={(e) => setFeatured(e.target.checked)}
-                className="w-4 h-4 text-[#E50914] rounded border-neutral-300 focus:ring-[#E50914]"
-              />
-              <div>
-                <span className="text-xs font-bold text-neutral-900 block">
-                  Featured Headline Story
+            {/* Main Article Toggle (Select or Unselect) */}
+            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-wider text-neutral-900 flex items-center gap-1.5">
+                  <Star className={`w-4 h-4 ${featured ? 'fill-amber-400 text-amber-500' : 'text-neutral-400'}`} />
+                  Main Article (Lead Story)
                 </span>
-                <span className="text-[11px] text-neutral-500 block">
-                  Promote to dominant position on the homepage
+                <span
+                  className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                    featured ? 'bg-amber-100 text-amber-800' : 'bg-neutral-200 text-neutral-600'
+                  }`}
+                >
+                  {featured ? 'Main Story' : 'Standard Story'}
                 </span>
               </div>
-            </label>
+              <p className="text-[11px] text-neutral-500 leading-relaxed">
+                When selected, this article sits in the primary lead hero slot on the homepage. Unselect to publish as a regular category story.
+              </p>
+              <button
+                type="button"
+                onClick={() => setFeatured(!featured)}
+                className={`w-full py-2 px-3 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer ${
+                  featured
+                    ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-xs'
+                    : 'bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700'
+                }`}
+              >
+                <Star className={`w-3.5 h-3.5 ${featured ? 'fill-white' : ''}`} />
+                <span>{featured ? '★ Selected as Main Article' : '☆ Select as Main Article'}</span>
+              </button>
+            </div>
 
             {/* Publication Date */}
             <div>
