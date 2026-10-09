@@ -1,0 +1,6 @@
+{
+  "name": "AlgoBuzz",
+  "description": "Premium entertainment media publication covering Movies, Anime, Gaming, and News.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
