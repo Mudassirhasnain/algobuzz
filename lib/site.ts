@@ -5,7 +5,7 @@ export const SITE_NAME = 'AlgoBuzz';
 
 export const SITE_TITLE = 'AlgoBuzz: Trending News on AI, Tech, Movies, Anime & Gaming';
 export const SITE_DESCRIPTION =
-  'Daily trending news, explainers and reviews on AI and tech, movies, anime and gaming. Clear, fast and no-fluff stories from AlgoBuzz.';
+  'AlgoBuzz brings daily trending news, explainers and reviews on AI, tech, movies, anime and gaming. Stay updated with what everyone is talking about.';
 
 export function absoluteUrl(pathOrUrl: string): string {
   if (!pathOrUrl) return SITE_URL;
