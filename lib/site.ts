@@ -14,7 +14,7 @@ export function absoluteUrl(pathOrUrl: string): string {
 }
 
 export function truncate(text: string, max: number): string {
-  const clean = (text || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  const clean = (text || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(); 
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max - 1);
   const lastSpace = cut.lastIndexOf(' ');
