@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     'movie reviews',
     'box office',
     'game release dates',
+    'Trending news',
   ],
   authors: [{ name: 'AlgoBuzz Editorial Team' }],
   creator: 'AlgoBuzz',
