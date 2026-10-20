@@ -1,18 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateAdminCredentials, createAdminSessionToken, ADMIN_COOKIE_CONFIG } from '@/lib/auth';
+import {
+  validateAdminCredentials,
+  createAdminSessionToken,
+  isLoginRateLimited,
+  recordFailedLogin,
+  clearFailedLogins,
+  ADMIN_COOKIE_CONFIG,
+} from '@/lib/auth';
+
+function getClientKey(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  return forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+}
 
 export async function POST(request: NextRequest) {
+  const clientKey = getClientKey(request);
+
+  if (isLoginRateLimited(clientKey)) {
+    return NextResponse.json(
+      { error: 'Too many failed attempts. Try again in 15 minutes.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password } = body ?? {};
 
     const isValid = validateAdminCredentials(email, password);
     if (!isValid) {
-      // Must return exactly "Invalid email or password." as required by prompt
+      recordFailedLogin(clientKey);
       return NextResponse.json({ error: 'Invalid email or password.' }, { status: 401 });
     }
 
-    const token = await createAdminSessionToken(email);
+    clearFailedLogins(clientKey);
+    const token = await createAdminSessionToken(email.trim().toLowerCase());
 
     const response = NextResponse.json({
       success: true,
@@ -23,7 +45,8 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (err) {
+    // Usually a missing or short SESSION_SECRET, or a malformed request body
     console.error('Login error:', err);
-    return NextResponse.json({ error: 'Invalid email or password.' }, { status: 500 });
+    return NextResponse.json({ error: 'Login is unavailable. Check server configuration.' }, { status: 500 });
   }
 }
