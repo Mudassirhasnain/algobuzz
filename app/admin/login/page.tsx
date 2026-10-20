@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@algobuzz.com"
+                placeholder="Admin email"
                 className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-[#E50914] focus:bg-white transition-all"
               />
               <Mail className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5" />
