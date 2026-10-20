@@ -4,63 +4,81 @@ import { cookies } from 'next/headers';
 const SESSION_COOKIE_NAME = 'algobuzz_admin_session';
 
 function getSessionSecret(): Uint8Array {
-  const secret = process.env.SESSION_SECRET || 'algobuzz-editorial-secret-key-2026-production';
+  const secret = process.env.SESSION_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error('SESSION_SECRET must be set and at least 32 characters long');
+  }
   return new TextEncoder().encode(secret);
 }
 
-export function validateAdminCredentials(email?: string, password?: string): boolean {
-  if (!email || !password) return false;
-
-  const normalizedEmail = email.trim().toLowerCase();
-  const configuredEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-  const configuredPassword = process.env.ADMIN_PASSWORD;
-
-  // Recognized admin accounts:
-  // 1. The account owner: kinguumusic@gmail.com
-  // 2. Default editorial admin: admin@algobuzz.com
-  // 3. Any email matching ADMIN_EMAIL env var
-  const isAuthorizedEmail =
-    normalizedEmail === 'kinguumusic@gmail.com' ||
-    normalizedEmail === 'admin@algobuzz.com' ||
-    (configuredEmail !== '' && normalizedEmail === configuredEmail);
-
-  if (!isAuthorizedEmail) {
-    return false;
+// Compares two strings without stopping at the first mismatch
+function safeEqual(a: string, b: string): boolean {
+  const encoder = new TextEncoder();
+  const aBytes = encoder.encode(a);
+  const bBytes = encoder.encode(b);
+  let diff = aBytes.length ^ bBytes.length;
+  const length = Math.max(aBytes.length, bBytes.length);
+  for (let i = 0; i < length; i++) {
+    diff |= (aBytes[i] ?? 0) ^ (bBytes[i] ?? 0);
   }
-
-  // 1. If explicit ADMIN_PASSWORD is set in env
-  if (configuredPassword && password === configuredPassword) {
-    return true;
-  }
-
-  // 2. Default admin credentials
-  if (password === 'AlgoBuzzAdmin2026!') {
-    return true;
-  }
-
-  // 3. For the owner account (kinguumusic@gmail.com), allow their password
-  // or standard passwords so they are never locked out of their app
-  if (normalizedEmail === 'kinguumusic@gmail.com') {
-    if (password.length >= 3) {
-      return true;
-    }
-  }
-
-  // 4. Common admin passwords for staging / editorial tests
-  if (
-    password === 'admin' ||
-    password === 'admin123' ||
-    password === 'password' ||
-    password === 'algobuzz' ||
-    password === 'algobuzz2026'
-  ) {
-    return true;
-  }
-
-  return false;
+  return diff === 0;
 }
 
-export async function createAdminSessionToken(email: string = 'kinguumusic@gmail.com'): Promise<string> {
+export function validateAdminCredentials(email?: string, password?: string): boolean {
+  if (typeof email !== 'string' || typeof password !== 'string') return false;
+  if (!email || !password) return false;
+
+  const configuredEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+  const configuredPassword = process.env.ADMIN_PASSWORD || '';
+
+  // Fail closed: no env values, no login
+  if (!configuredEmail || configuredPassword.length < 12) return false;
+
+  // Both checks always run, so timing does not reveal which one failed
+  const emailOk = safeEqual(email.trim().toLowerCase(), configuredEmail);
+  const passwordOk = safeEqual(password, configuredPassword);
+  return emailOk && passwordOk;
+}
+
+// ---------------------------------------------------------------------------
+// Login rate limiting (in memory, best effort)
+// On Vercel each serverless instance keeps its own counter, so this slows
+// attackers down but does not stop them completely. Use Upstash Redis or a
+// database table for a strict limit.
+// ---------------------------------------------------------------------------
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+const failedAttempts = new Map<string, { count: number; firstAttemptAt: number }>();
+
+export function isLoginRateLimited(key: string): boolean {
+  const entry = failedAttempts.get(key);
+  if (!entry) return false;
+  if (Date.now() - entry.firstAttemptAt > LOCKOUT_WINDOW_MS) {
+    failedAttempts.delete(key);
+    return false;
+  }
+  return entry.count >= MAX_FAILED_ATTEMPTS;
+}
+
+export function recordFailedLogin(key: string): void {
+  const now = Date.now();
+  const entry = failedAttempts.get(key);
+  if (!entry || now - entry.firstAttemptAt > LOCKOUT_WINDOW_MS) {
+    failedAttempts.set(key, { count: 1, firstAttemptAt: now });
+    return;
+  }
+  entry.count += 1;
+}
+
+export function clearFailedLogins(key: string): void {
+  failedAttempts.delete(key);
+}
+
+// ---------------------------------------------------------------------------
+// Session tokens
+// ---------------------------------------------------------------------------
+export async function createAdminSessionToken(email: string): Promise<string> {
   const secret = getSessionSecret();
   const token = await new SignJWT({ role: 'admin', email })
     .setProtectedHeader({ alg: 'HS256' })
