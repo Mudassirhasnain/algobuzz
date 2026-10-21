@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -103,6 +104,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-[#FAFAFA] text-neutral-900 selection:bg-[#E50914] selection:text-white">
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="THUpGdSMGJ8eSe5ZvD6vBw"
+          strategy="beforeInteractive"
+        />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
