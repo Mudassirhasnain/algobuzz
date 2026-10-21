@@ -35,6 +35,11 @@ export default async function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      {/* Page H1 (one per page, for SEO and accessibility) */}
+      <h1 className="pb-4 text-xs sm:text-sm font-black font-headline uppercase tracking-wider text-neutral-500">
+        AlgoBuzz: Daily Trending News on AI, Tech, Movies, Anime &amp; Gaming
+      </h1>
+
       {/* 1. Sophisticated Featured Hero (with Main Article spotlight) */}
       <FeaturedEditorial
         leadStory={leadStory}
