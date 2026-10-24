@@ -4,7 +4,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/site';
+import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, SITE_LOGO, DEFAULT_OG_IMAGE } from '@/lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,19 +30,15 @@ export const metadata: Metadata = {
   authors: [{ name: 'AlgoBuzz Editorial Team' }],
   creator: 'AlgoBuzz',
   publisher: 'AlgoBuzz',
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: '/',
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&h=630&q=85',
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
         alt: 'AlgoBuzz: trending news on AI, movies, anime and gaming',
@@ -66,9 +62,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: '/favicon.png',
-  },
 };
 
 export const viewport: Viewport = {
@@ -85,11 +78,13 @@ export default function RootLayout({
   const jsonLdOrg = {
     '@context': 'https://schema.org',
     '@type': 'NewsMediaOrganization',
-    name: 'AlgoBuzz',
+    name: SITE_NAME,
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+      url: SITE_LOGO,
+      width: 192,
+      height: 192,
     },
     sameAs: ['https://twitter.com/AlgoBuzzMedia'],
     masthead: `${SITE_URL}/about`,
