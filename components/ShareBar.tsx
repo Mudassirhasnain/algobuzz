@@ -12,7 +12,7 @@ export default function ShareBar({ title, url }: ShareBarProps) {
   const [copied, setCopied] = useState(false);
 
   const currentUrl =
-    url || (typeof window !== 'undefined' ? window.location.href : 'https://algobuzz.vercel.app');
+    url || (typeof window !== 'undefined' ? window.location.href : 'https://algobuzz.me');
 
   const handleCopy = async () => {
     try {
