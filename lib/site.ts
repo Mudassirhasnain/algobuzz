@@ -3,6 +3,13 @@
 export const SITE_URL = 'https://algobuzz.me';
 export const SITE_NAME = 'AlgoBuzz';
 
+// Square brand logo (192x192) used for structured data. Replaces the old Unsplash stock photo.
+export const SITE_LOGO = `${SITE_URL}/favicon.png`;
+
+// Default social-share image for pages that don't set their own.
+export const DEFAULT_OG_IMAGE =
+  'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&h=630&q=85';
+
 export const SITE_TITLE = 'AlgoBuzz: Trending News on AI, Tech, Movies, Anime & Gaming';
 export const SITE_DESCRIPTION =
   'AlgoBuzz brings daily trending news, explainers and reviews on AI, tech, movies, anime and gaming. Stay updated with what everyone is talking about.';
