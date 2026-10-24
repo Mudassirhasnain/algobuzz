@@ -1,6 +1,6 @@
 // Single source of truth for the public site URL and default SEO copy.
 // Intentionally ignores APP_URL (it was an AI Studio leftover that pointed to localhost).
-export const SITE_URL = 'https://algobuzz.vercel.app';
+export const SITE_URL = 'https://algobuzz.me';
 export const SITE_NAME = 'AlgoBuzz';
 
 export const SITE_TITLE = 'AlgoBuzz: Trending News on AI, Tech, Movies, Anime & Gaming';
