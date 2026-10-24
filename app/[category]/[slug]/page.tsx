@@ -9,7 +9,7 @@ import ArticleBody from '@/components/ArticleBody';
 import ShareBar from '@/components/ShareBar';
 import RelatedStories from '@/components/RelatedStories';
 import { Clock, Calendar, User, ArrowLeft } from 'lucide-react';
-import { SITE_URL, absoluteUrl, truncate } from '@/lib/site';
+import { SITE_URL, SITE_LOGO, absoluteUrl, truncate } from '@/lib/site';
 import { CATEGORY_INFO } from '@/lib/utils';
 
 // Re-check the database at most every minute so newly published articles show up
@@ -123,7 +123,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       name: 'AlgoBuzz',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+        url: SITE_LOGO,
+        width: 192,
+        height: 192,
       },
     },
     mainEntityOfPage: {
@@ -299,7 +301,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               {article.author.role}
             </p>
             <p className="text-xs text-neutral-600 leading-relaxed pt-1">
-              Senior staff correspondent for AlgoBuzz covering the intersection of creative storytelling, production economics, and international entertainment media.
+              Senior Staff At AlgoBuzz
             </p>
           </div>
         </div>
