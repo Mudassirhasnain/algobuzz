@@ -6,8 +6,40 @@ import LatestFeed from '@/components/LatestFeed';
 import { ArrowRight, Film, Sparkles, Gamepad2, Newspaper } from 'lucide-react';
 import Link from 'next/link';
 import { Category } from '@/lib/types';
+import type { Metadata } from 'next';
+import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/lib/site';
 
 export const revalidate = 60; // Revalidate every minute
+
+// Homepage-only metadata. The canonical lives here (not in the root layout) so it
+// can't leak onto other pages.
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: '/',
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'AlgoBuzz: trending news on AI, movies, anime and gaming',
+      },
+    ],
+  },
+};
+
+// Tells Google the site's name so search results show "AlgoBuzz" instead of the bare domain.
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: `${SITE_URL}/`,
+};
 
 export default async function HomePage() {
   // Fetch all published articles
@@ -35,6 +67,12 @@ export default async function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema).replace(/</g, '\\u003c'),
+        }}
+      />
       {/* Page H1 (one per page, for SEO and accessibility) */}
       <h1 className="pb-4 text-xs sm:text-sm font-black font-headline uppercase tracking-wider text-neutral-500">
         AlgoBuzz: Daily Trending News on AI, Tech, Movies, Anime &amp; Gaming
