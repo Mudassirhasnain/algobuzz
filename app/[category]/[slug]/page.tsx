@@ -44,13 +44,13 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   }
 
   const canonicalUrl = `${SITE_URL}/${article.category}/${article.slug}`;
-  const seoTitle = truncate(article.title, 48);
+  const seoTitle = truncate(article.title, 60);
   const description = truncate(article.excerpt || article.subtitle || article.content, 155);
   const image = absoluteUrl(article.heroImage);
 
   return {
-    // "absolute" stops the layout template from adding a second "| AlgoBuzz".
-    title: { absolute: `${seoTitle} | AlgoBuzz` },
+    // "absolute" stops the layout template from adding "| AlgoBuzz" to article titles.
+    title: { absolute: seoTitle },
     description,
     keywords: [...(article.tags || []), article.category, 'AlgoBuzz'],
     authors: [{ name: article.author.name }],
