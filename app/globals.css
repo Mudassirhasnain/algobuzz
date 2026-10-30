@@ -42,6 +42,48 @@ body {
   background: #9CA3AF;
 }
 
+/* Article tables (plain <table> inside article HTML, no per-article <style> needed) */
+.article-body-container table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+}
+.article-body-container th,
+.article-body-container td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #E5E7EB;
+}
+.article-body-container thead th {
+  background: #111827;
+  color: #ffffff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.article-body-container tbody tr:nth-child(even) {
+  background: #F9FAFB;
+}
+.article-body-container tbody td:first-child {
+  font-weight: 600;
+  color: #111827;
+}
+@media (max-width: 600px) {
+  .article-body-container table {
+    font-size: 0.85rem;
+  }
+  .article-body-container th,
+  .article-body-container td {
+    padding: 0.5rem 0.65rem;
+  }
+}
+
 /* Smooth selection */
 ::selection {
   background-color: #E50914;
