@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { DM_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, SITE_LOGO, DEFAULT_OG_IMAGE } from '@/lib/site';
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
+  display: 'swap',
+  variable: '--font-dm-sans',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -91,7 +100,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${dmSans.variable}`}>
       <head>
         <script
           type="application/ld+json"
